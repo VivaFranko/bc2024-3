@@ -25,4 +25,21 @@ if (!fs.existsSync(input)) {
 if (!(output || display)) {
     return;
 }
- 
+
+const jsonStr = fs.readFileSync(input, {
+    encoding: "utf-8",
+    flag: "r",
+});
+const data = JSON.parse(jsonStr);
+const newData = data
+    .filter((item) => item.parent === "BS3_BanksLiab")
+    .map((item) => `${item.txten}:${item.value}`);
+const newjsonStr = JSON.stringify(newData);
+
+if (output) {
+    fs.writeFileSync(output, newjsonStr, {
+        encoding: "utf-8",
+    });
+}
+
+if (display) console.log(newjsonStr);
